@@ -70,6 +70,23 @@ Shared ideas in both scripts:
 - RandomResizedCrop, MixUp, ColorJitter, RandomHorizontalFlip, and RandomErasing
 - SGD or AdamW, checkpoint resume logic, and top-1 / top-5 evaluation
 
+## Visual Summary
+
+```mermaid
+flowchart LR
+  A[ResNet-50 backbone] --> B{Training target}
+  B --> C[CIFAR-100 script]
+  B --> D[ImageNet script]
+  C --> C1[3x3 stem<br/>no max-pool]
+  C --> C2[CutMix + RandomErasing]
+  C --> C3[SGD + AMP]
+  D --> D1[7x7 stride-2 stem<br/>max-pool]
+  D --> D2[MixUp + RandomResizedCrop]
+  D --> D3[SGD or AdamW<br/>resume support]
+```
+
+The two scripts share the same ResNet-50 idea but diverge where the dataset scale changes. The CIFAR version is adapted for small `32x32` inputs, while the ImageNet version keeps the standard large-scale recipe.
+
 ## License
 
 MIT
